@@ -1,0 +1,33 @@
+
+
+%%%%%%%%%%%%%%%%%%% Section 8 %%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec-intro}
+
+Introduction part.
+
+
+\stitle{Related Work.} We categorize the related work as follows.
+
+\etitle{Rule-based Model for Erroneous Entity Detection
+}. Traditionally, functional dependency \cite{kolahi2009approximating} and conditional functional dependency \cite{bohannon2007conditional} have achieved huge success to identify errors when data is organized into relations with a fixed set of attributes. Functional dependency can be treated as a set of rules. People can easily find violations among different relation tables and locate erroneous data based on these rules. As a large amount of data is converted into RDF format by a variety of tools, the graph representation becomes popular and well adopted to support emerging applications such as knowledge search \cite{jindal2014review},  fact checking \cite{fionda2018fact}, and recommendation \cite{zhang2016collaborative}. In the RDF format, a graph consists of a set of triples $<v_x$, $r$, $v_y>$, where $v_x$ and $v_y$ denote a subject entity and an object entity, respectively, and $r$ refers to a predicate (a relationship) between $v_x$ and $v_y$.
+This RDF graph representation at one time still can be viewed as a graph database, therefore we can benefit from traditional table-based approaches. On the other hand, the RDF graph representation requires us to extend the functional dependency in a way that can work on extremely decomposed tables since RDF data is not normally organized into relations with a fixed set of attributes. The graph 
+organization provides us a new possibility to apply graph patterns for error detection and extends the traditional rule-based models on tables. \cite{yu2011extending} proposed value-clustered graph functional dependency to extend the functional dependencies (VGFDs) that can 
+construct the dependencies across the
+whole data set schema instead of a single relation. Moreover, the VGFDs can better model the probabilistic in nature regarding dependencies since one-to-one value correspondences are inappropriate in the RDF graph setting (e.g. the days needed for processing an request is usually limited to a range description but not an exact value).
+Functional dependencies for graphs \cite{fan2016functional} have been proposed to capture errors in graph data. 
+Compared to VGFDs, graph functional dependencies support general topological constraints
+that enforce topological and value constraints by incorporating graph patterns with variables and subgraph isomorphism. Now, the hard constraints (e.g., subgraph isomorphism) are useful for detecting data inconsistencies.  \cite{fan2017dependencies} further proposed a class of dependencies, referred to as graph entity dependencies (GEDs). A GED is a combination of graph pattern and an attribute dependency that can be used to catch inconsistencies.   
+Although these Rule-based Models are useful for erroneous entity detection task, they usually assume the graph they relied on for learning the set of the rules is complete that usually is not the case for the real-world graphs. The real-world incomplete graphs will lead to incomplete set of rules that cannot cover all the errors that occurred in the graph data sets. Moreover, for the rule-mining methodologies proposed in rule-based models that are helpful for error detection task, such as AMIE \cite{galarraga2013amie,galarraga2015fast} that discovers rules with conjunctive Horn clauses, GFDs \cite{lin2019discovering} that involves subgraph isomorphism, and
+graph fact checking rules (GFCs) that incorporates graph patterns, these methodologies usually need to compute pattern matching and are computationally hard in general. Our approach doesn't need to build rules from scratch or relies on some pre-defined rules for the error detection task. To our best knowledge, this is the first attempt to solve the detection of erroneous entity problem on attributed networks by developing a carefully designed graph neural network
+model.
+
+\etitle{Learning-based Model for Erroneous Entity Detection}.
+Another type of approach focuses on learning models that can be used to capture nodes' errors \cite{}. 
+In \cite{krishnan2016activeclean}, the authors proposed a progressive data cleaning framework that supports common convex loss models (e.g., linear regression and SVMs) for error detection and cleaning on traditional table-based records. Authors in \cite{} presented a probabilistic framework using the relations (equal, greater than, less than) among multiple
+RDF predicates to detect inconsistencies in numerical and date
+values based on the statistical distribution of predicates and objects in RDF datasets.
+As the data is organized more naturally into graph representations, the model parameter learning in this class starts leveraging more information from the graph representation. The model parameters usually are not only determined by the 
+mutual interactions between nodes (e.g.topological structure), but also are determined by their content dissimilarity
+(e.g. nodal attributes).  PaTyBRED \cite{} proposed an error detection method which relies on path and type features used by a classifier for
+every relation in the graph exploiting local feature selection.  In contrast to this class of work that used linear or shallow model to model the attributed networks, our approach shows the significance of developing a novel deep architecture on attributed networks that can better model the non-linearity between the node interactions and nodal attributes. 
