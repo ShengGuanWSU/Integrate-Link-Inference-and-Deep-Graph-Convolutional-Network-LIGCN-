@@ -1,8 +1,14 @@
 \vspace{-1ex}
 %%%%%%%%%%%%%%%%%%% Section 8 %%%%%%%%%%%%%%%%%%%%%%%
-\section{Problem Definition 1}
+\section{File Recommendation Problem}
 \label{sec-def1, for GCN recommendation problem}
 
+File recommendation is aiming to generate new relationships given the network of users and files in which users interaction with files (for example, citation network or book-author network).
 
+In this experiment, the goal of GCN is to generate the representations of a given user by using his or her published papers or books as input features which can be used for downstream applications, such as recommendation.
 
+In order to learn the structural relationship of entity's network, this network should be modeled into bipartite graph. Set I (containing papers or books) and set C (containing users) are two disjoint set of the graph \cite{pintest}. 
 
+Beside the structural relationship of graph, This model embeds attributes of each nodes (e.g., author, year, title) into features. Then each node is computed through the GCN network to get information updated. Loss function is calculated so that the model can recognize positive examples from positive data sets. 
+
+After we generate the new embeddings, these information is used to solve recommendation problem through nearest neighbor lookup.

@@ -3,6 +3,45 @@
 \section{System Framework}
 \label{sec-framework}
 
+The hidden link prediction model can effectively help us capture ``hidden link" that reflect long-range dependencies between node $v$ and its semantically associated neighborhood. In this case, the neighborhood aggregation now is expected not only to aggregate topology-aware neighbors but also to aggregate semantically close neighbors that are linked via semantical edges. Traditional ConvGNNs like GCN, GraphSAGE can be enhanced by this hidden link prediction model.
+
+We use $M$ here to generalize GCN, GraphSAGE models. The \textbf{LIGCN} framework is shown as Fig.~\ref{fig:hllM}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[tb!]
+%\vspace{-1ex}
+\begin{center}
+{\small
+\begin{minipage}{3.36in}
+\myhrule
+\vspace{-1ex}
+%%%%%%%%%%%%%%%%%Algorithm \paragfd%%%%%%%%%%%%
+\mat{0ex}{
+{\bf Framework}~ \bf LIGCN\\
+\sstab {\sl Input:\/} 
+\= graph $G$, node features $F$, training labels $T_G$, model $M$.\\
+{\sl Output:\/} enriched new model $M'$.\\
+%%%%%%%%%%%%%
+\bcc \hspace{3.6ex}\= $G_t$,$F_t$ = $\kw{Preprocess}$($G$,$F$,$T_G$) \\
+\icc\> $M_{hlp}$ = $\kw{HiddenLinkLearn}$($G_t$,$F_t$) \\
+\icc\> $G'$ = $\kw{Enrich}$($M_{hlp}$,$G$) \\
+\icc\> \bf LIGCN = $\kw{learnM}$($G'$,$F$,$T_G$,$M$) \\
+%%%%%%%%%%%%%
+}
+\vspace{-3ex}
+\myhrule
+\end{minipage}
+}
+\end{center}
+\vspace{-2ex}
+\caption{LIGCN Framework} 
+\label{fig:hllM}
+\vspace{-3ex}
+\end{figure}
+
+
+\vspace{.5ex}
+
 
 
 

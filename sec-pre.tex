@@ -1,10 +1,29 @@
 %%%%%%%%%%%%%%%%%%% Section 8 %%%%%%%%%%%%%%%%%%%%%%%
 \vspace{-1ex}
-\section{Pre}
+\section{Preliminary}
 \label{sec-pre}
 
 \vspace{-1ex}
 We start with the notions of graphs.
+
+\stitle{Graphs}. We consider an 
+attributed graph
+$G$ = $(V,E,F_A)$ with a finite set of
+nodes $V$, and
+a finite set of edges $E\subseteq V\times V$.
+Each node $v\in V$ has a
+{\em node tuple} $F_A(v)$ =
+$\{(A_1, a_1), \ldots, (A_n,a_n)\}$
+defined on a set of node attributes $\A$,
+where a pair $(A_i, a_i)\in F_A(v)$
+states that the attribute $v.A_i\in\A$ has
+a value $a_i\in\adom(A_i)$. Here
+(a) $\A$ refers to a set of all the node
+attributes seen in $G$; and (b)
+$\adom(A_i)$ is a finite {\em active domain} of
+attribute $A_i$ in $G$, and contains
+all the values of $v.A_i$, where $v$ ranges
+over all the nodes in $V$.
 
 
 

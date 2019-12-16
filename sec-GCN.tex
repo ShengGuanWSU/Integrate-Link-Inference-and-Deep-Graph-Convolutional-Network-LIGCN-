@@ -3,6 +3,18 @@
 \section{GCN--recommendation system}
 \label{sec-GCN}
 
+\textbf{Feature extraction: }Attributes of nodes including field of study, year, conference, can be transformed into feature vector. Data in string type should go through FastText ~\cite{fasttext}, a text representation tool to transfer words in to vector. Then concatenate them in to a whole feature vector.\\
+\textbf{Forward propagation} is to generate the embedding $z_u$ for node u.
+
+\textbf{Convolution:} After performing a linear transformation on each neighbor's embedding, it outputs a non-linear output, and then performs  aggregation / pooling with weights. Then concatenate node u embedding and neighbor aggregation embedding, and then perform a linear transformation on the nonlinear output.
+Normalization can make training more stable and more efficient in the application of approximate finding nearest neighbors.
+
+\textbf{Loss Function: }
+The basic idea of training is to maximize the inner product of positive examples. However, we also need to make sure that the inner product of negative examples is smaller than that of  positive examples. The loss function for a single pair then is max-margin-based(i.e., hinge loss):
+$$L(z_{q}z_{i})=\mathbb{E}_{n_{k}~P_{n}(q)}max \left\{ 0,z_{q}\cdot z_{n_{k}}-z_{q}\cdot z_{i}+\triangle \right\}$$
+where $P_{n}(q)$ is the distribution of negative examples for item $q$, $\triangle$ is the margin hyper-parameter.
+
+\textbf{Recommendation based on KNN: } In most cases we can directly utilize the embeddings generatd by Pinsage to make recommendations with nearest-neighbor lookups in the embedding space. In other words, doe a query item q, the items whose embeddings are the K-nearest neighbors of the query item’s embedding are the ones to recommend. Approximate KNN can be achieved through locality sensitive hashing\cite{hashing-nn}. After we calculate the hash function, retrieval of items can be implemented with a two-level retrieval process based on the Weak AND operator\cite{twolevel}.
 
 
 

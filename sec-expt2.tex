@@ -3,4 +3,26 @@
 \section{Experiment 2}
 \label{sec-expt}
 
+Using real-world and synthetic dataset, we experimentally verify the efficiency and effectiveness of our LIGCN techniques.
+
+\stitle{Datasets} We used one real-world graphs, that is \textbf{{\em DBpedia}} \footnote{\scriptsize\url{https://wiki.dbpedia.org/develop/datasets}}, a knowledge-based graph that contains a set of triples with size of $33,449,633$. We used a parser to further process this giant knowledge graph to a graph with $9595$ nodes and $5540$ edges.
+Each node includes $4$ attributes and each edge reflects the ``influence" relationship.
+
+We also employed \textbf{{\em BSBM}} \footnote{\scriptsize\url{http://wifo5-03.informatik.uni-mannheim.de/bizer/berlinsparqlbenchmark/}}
+e-commerce benchmark to generate synthetic knowledge graphs over a set of products with different
+types, related vendors and offers made by vendors. The generator is
+controlled by the number of nodes (up to 60M), edges (up to
+152M), and attribute labels drawn from an alphabet $\Sigma$ of $3080$ labels. We processed these synthetic knowledge graphs further to aggregate related attributes and generated a graph with two types of entities- product and offer. Different offers that are made by the same vendor are connected by edges and different offers for the same product are also connected. 
+
+As there is no ground truth of erroneous entities in the above datasets, we need to inject errors into the attributed networks for our empirical evaluation. We refer to error generation tasks in {\em BART} \cite{arocena2015messing} to control the error-generation process. {\em BART} can generate constraint-induced errors with a set of configuration parameters , e.g. error percentage for each violation of the constraints in a systematic manner. At the same time, {\em BART} is capable to generate random errors of several kinds, e.g. typos, bogus or null values, and outliers. For instance, in the synthetic dataset, we organized product and offer entities respectively as two relation tables and manually construct a set of functional dependencies or conditional functional dependencies,  e.g. for products with the same product id in two tables, their product type should be the same. At the same time, we added some random errors into these two tables. Then, by comparing the difference between the clean and polluted tables and transferring them back to the graph organization, we got the ground truth labels.
+
+\stitle{Compared Methods}. We compare the proposed \textbf {LIGCN} framework with the following popular and state-of-the-art erroneous entity detection methods:
+(1) GCN \cite{kipf2016semi} jointly considers the node attributes and graph topology in the semi-supervised setting.
+(2) GraphSAGE \cite{hamilton2017inductive} jointly considers the node attributes and graph topology but needs the supervised setting. In the experiment, we remove all the nodes without labels and their affiliated edges from the graph. We can treat GraphSAGE as a special form of GCN that implements node-wise sampling to get a fixed number of neighbors and also has the flexibility to select the aggregation function for node embedding.
+
+\stitle{Metrics}
+Metrics: Accuracy, F-1 score, precision.
+
+We next present the details of our findings.
+
 

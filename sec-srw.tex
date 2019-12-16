@@ -1,7 +1,45 @@
 \vspace{-1ex}
 %%%%%%%%%%%%%%%%%%% Section 8 %%%%%%%%%%%%%%%%%%%%%%%
-\section{Link Prediction Model}
+\section{Hidden Link Prediction Model}
 \label{sec-srw}
+As we discussed, one well-recognized and studied drawbacks of GCN-based deep networks is that they suffer from oversmoothing issue when we try to stack multiple graph convolutional layers into one network. The smoothing can happen very quickly such that the embeddings become less discriminative when the layers increase. In other words, the oversmoothing with many graph convolutional layers limits the GCN model to be with shallow architectures.
+
+We would like to capture some long-range dependencies in the graph neural network model, and at the same time not to lose the strength of local learning that GCN has. Then, one natural idea is to learn a ``hidden link'' that represents long-range dependencies between each source node $v$ and its semantically close ``long-range" neighborhood. By integrating the ``hidden link'' into the neighborhood aggregation, we still can leverage the local representation learning to update the node embeddings in the GCN-based model. 
+
+As random walks with restarts are proven to be a powerful way to compute the proximities of nodes on the graph, we propose a novel way to bias the random walk so that it will more often visit nodes that are in the n-hop neighbors of source node $v$ and at the same time are semantically close to node $v$. We name these nodes as {\em n-hop semantical neighbors} of node $v$.
+The reason to consider $v$'s {\em n-hop semantical neighbors} as we mentioned before is that the embeddings of these nodes represent the long-range dependencies. It is reasonable to only consider up to $n$-hop neighbors since the interaction between two nodes in the real-world diminishes very quickly as the hops increases. For instance, in the social graph, nodes represent people and edges represent friendships. When hop distance equals to 2, the chance that two nodes will become friends later is 5 order of magnitude higher than two nodes with hop distance 8 \cite{backstrom2011supervised}.  Then, we formulate a supervised learning task where the goal is to learn a function that assigns strengths to edges in order to visit such {\em n-hop semantical neighbors} more often. The {\em n-hop semantical neighbors} indicate the most relevant parts of the source node $v$, but are difficult to be captured in GCN-based model because of the oversmoothing issue. To better extract high-level representations of source node $v$ as well as its {\em n-hop semantical neighbors}, semantical edges that connect source $v$ with these {\em n-hop semantical neighbors} will be constructed or recovered (some edges are missing in the input graph $G$ but are reconstructed as semantical edges)
+
+In the hidden link prediction model, we are given a set of nodes with training labels and we name this node set as source node set $S$. Since our algorithm can be extended to multiple source nodes by batch learning, for simplicity the following discussion only focus on one single node $s \in S$ and gets $s'$s hidden links. The discussion can be easily extended to all source nodes in set $S$.
+
+In the graph $G(V,E,F_v)$, a source node 
+$s$ and a set of candidates to which $s$ would create a hidden semantical edge. All candidates must reside in $s$'s n-hop neighborhood but not $s$'s one-hop neighbors. If there is a hidden link between node $s$ and one of its candidates, we label all such kind of candidates as {\em n-hop semantical neighbors} ${I = \{I_1, ..., I_m\}}$, while we call other nodes to which $s$ does not create a hidden link as {\em non n-hop semantical neighbors} ${N =\{N_1, ..., N_n\}}$. Naturally, the candidate set is $C = \{c_i\} = I \cup N$. Each node comes with a feature vector $F_v(v)$ that is transformed from a mapping of original attribute vector $F_A(v)$ in attributed graph $G$ = $(V,E,F_A)$. This mapping is a feature generation method that converts attribute vector $F_A(v)$ to feature vector $F_v(v)$. Then for any node pair $(u,v)$, the edge feature vector $\psi_{uv}$ is a concatenation of feature vector $F_v(u)$ and $F_v(v)$. 
+
+The hidden link prediction model is characterized as follows.
+\tbi
+\item \textbf{Input}: Attributed graph $G$, edge feature vectors $\psi$, source node $v$, n-hop semantical neighbors $I$, non n-hop semantical neighbors $N$;
+\item \textbf{Output}: Model $M_{hlp}$ with learned parameters $\omega$ such that it will assign edge weights $\alpha_{uv}$ in a way that a random walk will be more likely to visit nodes in $I$ than $N$
+\ei
+
+Thus, to get the hidden link prediction model, we need to solve the optimization problem that is to find the optimal set of parameters $\omega$. It turns out that we can map an instance of supervised random walks (SRW) \cite{backstrom2011supervised} to this hidden link model computation instance once we have the $G$, $\psi$, $v$, $I$, and $N$. Hence, we can invoke a procedure of SRW algorithm to learn the model $M_{hlp}$ 
+
+Once we have model $M_{hlp}$, we can have any node pairs' strength ${\alpha_{uv} = f_\omega(\psi_{uv})}$ that models the random walk transition probability. Thus, nodes connected to source node $v$ via paths of edges with strong strength will likely be visited. From edge strength $\alpha_{uv}$ we can further compute the stationary distribution $p_u$ for each node $u$ of the random walk starting from source node $v$.
+
+Then, to add possible missing edges back and to add more semantical edges of source node ${s \in S}$, we evaluate all the neighborhood of source node set $S$ 
+and use the minimum value $p_u$ as the threshold $th_{min}$. Then any new pairs $(v,d)$ where $v \in S$, $p_d > th_{min}$ and ${(v,d) \notin E}$ will become semantical edges and add to $G$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
