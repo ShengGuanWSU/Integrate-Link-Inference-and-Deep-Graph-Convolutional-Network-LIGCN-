@@ -1,6 +1,6 @@
 %\vspace{-1ex}
 %%%%%%%%%%%%%%%%%%% Section 8 %%%%%%%%%%%%%%%%%%%%%%%
-\section{Experiment 2}
+\section{Experiment 2-- LIGCN}
 \label{sec-expt}
 
 Using real-world and synthetic dataset, we experimentally verify the efficiency and effectiveness of our LIGCN techniques.
@@ -21,8 +21,99 @@ As there is no ground truth of erroneous entities in the above datasets, we need
 (2) GraphSAGE \cite{hamilton2017inductive} jointly considers the node attributes and graph topology but needs the supervised setting. In the experiment, we remove all the nodes without labels and their affiliated edges from the graph. We can treat GraphSAGE as a special form of GCN that implements node-wise sampling to get a fixed number of neighbors and also has the flexibility to select the aggregation function for node embedding.
 
 \stitle{Metrics}
-Metrics: Accuracy, F-1 score, precision.
+In this experiment, we evaluate the percentage of the edges we removed from the \textbf{{\em DBpedia}} graph and how the link prediction model can recover the incomplete graph and construct some ``hidden links" that can enhance the performance of the \textbf{LIGCN} framework.
+Table 1-5 shows that \textbf{LIGCN} indeed can enhance the performance of corresponding model GCN or GraphSAGE by adopting the same aggregation function they use without sacrificing the accuracy performance. 
 
-We next present the details of our findings.
+\begin{table}[]
+\begin{adjustbox}{width=\columnwidth,center}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+ Removing Percentage&  0.1&0.2  &0.3  &0.4  &0.5  &0.6  &0.7  &0.8   \\ \hline
+ GraphSAGE & 0.61& 0.66&	0.71&	0.63&	0.60&	0.56&	0.56&	0.47 \\ \hline
+ LIGCN & 0.67&	0.71&	0.77&	0.71&	0.64&	0.64&	0.58&	0.49 \\ \hline
+ Gain (\%)&9.98&	6.36&	8.26&	12.26&	5.69&	12.86&	2.75&	2.88 \\ \hline
+\end{tabular}
+
+
+\end{adjustbox}
+\caption{Precision:LIGCN vs GraphSage}
+\label{tab-compare1} 
+\end{table}
+
+\begin{table}[]
+\begin{adjustbox}{width=\columnwidth,center}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+ Removing Percentage&  0.1&0.2  &0.3  &0.4  &0.5  &0.6  &0.7  &0.8   \\ \hline
+ GraphSAGE & 0.72&	0.76&	0.78&	0.73&	0.71&	0.69&	0.68&	0.63	 \\ \hline
+LIGCN & 0.76&	0.77&	0.80&	0.77&	0.73&	0.73&	0.70&	0.63 \\ \hline
+ Gain (\%)&5.00&	1.96&	2.01&	4.84&	1.87&	7.02&	2.46&	0.17	\\ \hline
+\end{tabular}
+
+
+\end{adjustbox}
+\caption{F1-Score:LIGCN vs GraphSage}
+\label{tab-compare2} 
+\end{table}
+
+\begin{table}[]
+\begin{adjustbox}{width=\columnwidth,center}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+ Removing Percentage&  0.1&0.2  &0.3  &0.4  &0.5  &0.6  &0.7  &0.8   \\ \hline
+ GraphSAGE & 0.79	&0.83&	0.85&	0.8	&0.78&	0.75&	0.75&	0.66	 \\ \hline
+LIGCN & 0.83&	0.85&	0.87&	0.84&	0.8&	0.81&	0.76&	0.68	 \\ \hline
+Difference&	+0.04&	+0.02&	+0.02&	+0.04&	+0.02&	+0.06&	+0.01&	+0.02		\\ \hline
+\end{tabular}
+
+
+\end{adjustbox}
+\caption{Accuracy:LIGCN vs GraphSage}
+\label{tab-compare3} 
+\end{table}
+
+
+\begin{table}[]
+\begin{adjustbox}{width=\columnwidth,center}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+ Removing Percentage&  0.1&0.2  &0.3  &0.4  &0.5  &0.6  &0.7  &0.8   \\ \hline
+GCN & 0.42&	0.45&	0.43&	0.41&	0.49&	0.48&	0.47&	0.46		 \\ \hline
+LIGCN &0.48&	0.49&	0.48&	0.47&	0.49&	0.50&	0.49&	0.47		 \\ \hline
+Gain(\%)&13.85&	7.23&	10.86&	13.85&	0.26&	4.40&	4.51&	1.95		\\ \hline
+\end{tabular}
+
+
+\end{adjustbox}
+\caption{F1-Score:LIGCN vs GCN}
+\label{tab-compare4} 
+\end{table}
+
+
+\begin{table}[]
+\begin{adjustbox}{width=\columnwidth,center}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+Removing Percentage&  0.1&0.2  &0.3  &0.4  &0.5  &0.6  &0.7  &0.8   \\ \hline
+GCN & 0.55&	0.54&	0.56&	0.57&	0.52&	0.55&	0.52&	0.50		 \\ \hline
+LIGCN & 0.54&	0.53&	0.56&	0.59&	0.54&	0.57&	0.52&	0.52		 \\ \hline
+Difference&	-0.013&	-0.003&	-0.004&	0.011&	0.015&	0.02& 0&0.01321			\\ \hline
+\end{tabular}
+
+
+\end{adjustbox}
+\caption{Accuracy: LIGCN vs GCN}
+\label{tab-compare3} 
+\end{table}
+
+
+
+
+Similarly, we also create synthetic graph \textbf{{\em BSBM}} and evaluate the accuracy comparison between GCN and \textbf{LIGCN}. Base on our observation \textbf{LIGCN} achieves better accuracy than GCN. \textbf{LIGCN} outperforms GCN by 4\%, it improves the accuracy from 78\% to 81.3 \%.
 
 
